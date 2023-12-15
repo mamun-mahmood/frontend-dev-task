@@ -9,7 +9,7 @@ const Navbar = () => {
     const currentPath = useLocation().pathname;
     
     return (
-        <nav className="bg-gray-800">
+        <nav className="bg-gray-800 h-20">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex py-4">
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <Link to="/" className="flex-shrink-0 flex items-center">
