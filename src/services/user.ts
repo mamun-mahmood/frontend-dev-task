@@ -5,9 +5,19 @@ export const userApi = createApi({
         baseUrl: import.meta.env.VITE_API_URL as string,
     }),
     endpoints: (builder) => ({
+        createUser: builder.mutation({
+            query: (body) => ({
+                url: `/users`,
+                method: 'POST',
+                body,
+            }),
+        }),
         getUsers: builder.query({
-            query: () => "users",
+            query: ({page}) => ({
+                url: `/users?page=${page}`,
+                method: 'GET',
+            }),
         }),
     }),
 }) 
-export const { useGetUsersQuery } = userApi;
+export const { useCreateUserMutation, useLazyGetUsersQuery } = userApi;
