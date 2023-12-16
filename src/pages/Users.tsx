@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Loader from '../components/Loader';
 import { IUserState } from '../redux/features/user/userSlice';
 import { useLazyGetUsersQuery } from '../services/user';
+import IconButton from '../components/IconButton';
 
 const Users = () => {
     const [currentPage, setPage] = useState(1)
@@ -12,17 +13,58 @@ const Users = () => {
     useEffect(() => {
         getUsers({ page: currentPage })
     }, [getUsers, currentPage])
+
     const { data: users = [], total_pages: totalPage } = data as {
         data: IUserState[],
         total_pages: number,
     } || {}
-    console.log(data);
+
     const handleNext = () => {
         setPage(prev => prev + 1)
     }
     const handlePrevious = () => {
         setPage(prev => prev - 1)
     }
+    // const handleSelectAll = () => { }
+    const handleDelete = () => { }
+    const handleEdit = () => { }
+    const dummyStatus = [
+        {
+            id: 1,
+            name: 'Random Sticker Label',
+            color: '#027A48'
+        },
+        {
+            id: 2,
+            name: 'Churned',
+            color: '#000',
+        },
+        {
+            id: 3,
+            name: 'Customer',
+            color: '#027A48',
+        },
+        {
+            id: 4,
+            name: 'Customer',
+            color: '#027A48',
+        },
+        {
+            id: 5,
+            name: 'Churned',
+            color: '#000',
+        },
+        {
+            id: 6,
+            name: 'Customer',
+            color: '#027A48',
+        },
+    ]
+    const tableHeader = [
+        "User Info",
+        "About",
+        "Status",
+    ]
     return (
         <div className='w-full px-[10%] py-[5%]'>
             <div className="w-full flex justify-between ">
@@ -49,27 +91,27 @@ const Users = () => {
                     </button>
                 </div>
             </div>
-            <div className="mt-[33px] border border-[#EAECF0] rounded-lg px-6">
+            <div className="mt-[33px] border border-[#EAECF0] rounded-lg">
                 <table className="w-full ">
-                    <thead className="border-b border-[#eeeeee">
+                    <thead className="bg-[#F9FAFB] border-b border-[#eeeeee ">
                         <tr className="text-[#344054] text-sm ">
-                            <th className="py-[16px] text-start flex items-center gap-3"> <input className='w-5 h-5 rounded-[6px] bg-[#b82d2d] border-[1px] border-solid border-[#D0D5DD]'
+                            <th className="pl-6 py-[16px] text-start flex items-center gap-3"> <input className='w-5 h-5 rounded-[6px] bg-[#b82d2d] border-[1px] border-solid border-[#D0D5DD]'
                                 type="checkbox"
                                 name="selected" />
-                                <p>User Info</p>
                             </th>
-                            <th className="py-[16px] text-start">About</th>
-                            <th className="py-[16px] text-start">Status</th>
+                            {tableHeader.map((item) => <th key={item} className="text-start">{item}</th>)}
                         </tr>
                     </thead>
-                    <tbody className=''>
-                        {users.map(({ first_name, last_name, id, email, avatar }) => (
+                    <tbody className='' >
+                        {users.map(({ first_name, last_name, id, email, avatar, }, index) => (
                             <tr key={id} className="text-[#344054] text-sm">
+                                <td className="py-2 px-6 ">
+                                    <input className='w-5 h-5 rounded-[6px] bg-[#b82d2d] border-[1px] border-solid border-[#D0D5DD]'
+                                        type="checkbox"
+                                        name="selected" id={id.toString()} />
+                                </td>
                                 <td className="py-[16px]">
                                     <div className="flex items-center gap-3">
-                                        <input className='w-5 h-5 rounded-[6px] bg-[#b82d2d] border-[1px] border-solid border-[#D0D5DD]'
-                                            type="checkbox"
-                                            name="selected" id={id.toString()} />
                                         <img className='h-10 w-10 rounded-[50%]' src={avatar} alt={first_name + "avatar"} />
                                         <div>
                                             <p className="font-mediumtext-sm text-[#101828]">{first_name + last_name}</p>
@@ -83,18 +125,24 @@ const Users = () => {
                                         <p className="font-normal -sm text-[#667085]">{email}</p>
                                     </div>
                                 </td>
-                                <td className="py-[16px]">
-                                    <div>
-                                        <p className="font-mediumtext-sm text-[#101828]">{first_name + last_name}</p>
-                                        <p className="font-normal -sm text-[#667085]">{email}</p>
+                                <td className="py-[16px] flex gap-3 items-center">
+                                    <div className="flex-1">
+                                        <p className={`w-fit font-mediumtext-sm bg-[#F2F4F7] text-center px-2 rounded-2xl `} style={{
+                                            color: dummyStatus[index].color
+                                        }}>{dummyStatus[index].name}</p>
                                     </div>
+                                    <div className="flex gap-3">
+                                        <IconButton icon="/trash.svg" onClick={handleDelete} />
+                                        <IconButton icon="/edit.svg" onClick={handleEdit} />
+                                    </div>
+
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
                 {isLoading && <Loader />}
-                <div className="w-full flex justify-between items-center py-[16px]">
+                <div className="w-full flex justify-between items-center py-[16px] px-6">
                     <button className="w-[123px] h-10 rounded-lg py-[10x] px-[16px] text-[#344054]  border border-[#D0D5DD] items-center hover:opacity-80 transition-opacity disabled:opacity-50" onClick={handlePrevious}
                         disabled={currentPage === 1}
                     >

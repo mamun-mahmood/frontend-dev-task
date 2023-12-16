@@ -16,8 +16,8 @@ export const userApi = createApi({
             query: ({page}) => ({
                 url: `/users?page=${page}`,
                 method: 'GET',
-            }),
-        }),
+            })
+        })
     }),
 }) 
 export const { useCreateUserMutation, useLazyGetUsersQuery } = userApi;

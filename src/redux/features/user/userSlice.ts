@@ -7,6 +7,7 @@ export interface IUserState {
   first_name: string;
   last_name: string;
   avatar: string;
+  status: object;
 }
 
 const initialState: IUserState = {
@@ -16,6 +17,7 @@ const initialState: IUserState = {
   first_name: "",
   last_name: "",
   avatar: "",
+  status: {},
 };
 
 export const userSlice = createSlice({
