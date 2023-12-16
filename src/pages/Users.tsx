@@ -1,16 +1,13 @@
-import { FC, useEffect, useState } from 'react';
-import { useLazyGetUsersQuery } from '../services/user';
+import { useEffect, useState } from 'react';
+import Loader from '../components/Loader';
 import { IUserState } from '../redux/features/user/userSlice';
+import { useLazyGetUsersQuery } from '../services/user';
 
-interface UsersProps {
-    // Define your component props here
-}
-
-const Users: FC<UsersProps> = () => {
+const Users = () => {
     const [currentPage, setPage] = useState(1)
     const [
         getUsers,
-        { data, isLoading, isError, error },
+        { data, isLoading },
     ] = useLazyGetUsersQuery()
     useEffect(() => {
         getUsers({ page: currentPage })
@@ -96,8 +93,9 @@ const Users: FC<UsersProps> = () => {
                         ))}
                     </tbody>
                 </table>
+                {isLoading && <Loader />}
                 <div className="w-full flex justify-between items-center py-[16px]">
-                    <button className="w-[123px] h-10 rounded-lg py-[10x] px-[16px] text-[#344054]  border border-[#D0D5DD] items-center hover:opacity-80 transition-opacity" onClick={handlePrevious}
+                    <button className="w-[123px] h-10 rounded-lg py-[10x] px-[16px] text-[#344054]  border border-[#D0D5DD] items-center hover:opacity-80 transition-opacity disabled:opacity-50" onClick={handlePrevious}
                         disabled={currentPage === 1}
                     >
                         Previous
@@ -105,7 +103,7 @@ const Users: FC<UsersProps> = () => {
                     <p className='text-[#344054]'>
                         Page {currentPage} of {totalPage}
                     </p>
-                    <button className="w-[123px] h-10 rounded-lg py-[10x] px-[16px] text-[#344054]  border border-[#D0D5DD] items-center hover:opacity-80 transition-opacity" onClick={handleNext}
+                    <button className="w-[123px] h-10 rounded-lg py-[10x] px-[16px] text-[#344054]  border border-[#D0D5DD] items-center hover:opacity-80 transition-opacity disabled:opacity-50" onClick={handleNext}
                         disabled={currentPage >= totalPage}
                     >
                         Next
