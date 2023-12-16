@@ -29,13 +29,15 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, name, email, first_name, last_name, avatar } = action.payload;
+      const { id, name, email, first_name, last_name, avatar, isLoggedIn, token } = action.payload;
       state.id = id;
       state.name = name;
       state.email = email;
       state.first_name = first_name;
       state.last_name = last_name;
       state.avatar = avatar;
+      state.isLoggedIn = isLoggedIn;
+      state.token = token;
     },
     clearUser: (state) => {
       state.id = 0;

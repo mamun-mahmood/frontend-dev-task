@@ -1,4 +1,6 @@
 import { Link, useLocation, } from 'react-router-dom';
+import { useAppSelector } from '../redux/hooks';
+import { selectUser } from '../redux/features/user/userSlice';
 
 const navBtns = [
     { name: "Home", path: "/" },
@@ -24,7 +26,8 @@ const navBtns2 = [
 ]
 const Navbar = () => {
     const currentPath = useLocation().pathname;
-const avatar = "/Avatar.png"
+    const avatar = "/Avatar.png"
+    const {isLoggedIn} = useAppSelector(selectUser)
     return (
         <nav className="bg-[#6941C6] h-20">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex py-4 items-center">
@@ -42,8 +45,8 @@ const avatar = "/Avatar.png"
                 </div>
                 <div className="flex gap-2">
                     {navBtns2.map(({ icon }, index) => (
-                        <button key={index} 
-                         className="text-gray-300 hover:bg-[#7F56D9] hover:text-white px-3 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+                        <button key={index}
+                            className="text-gray-300 hover:bg-[#7F56D9] hover:text-white px-3 py-2 rounded-full text-sm font-medium flex items-center gap-2">
                             <img className='w-5 h-5' src={icon} alt={icon} />
                         </button>
                     ))}

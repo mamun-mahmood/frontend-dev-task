@@ -10,16 +10,15 @@ interface SignInProps {
 const SignUp: FC<SignInProps> = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const [loading, setLoading] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [
         mutateAsync,
-        { isLoading, isError, error, data, isSuccess },
-    ] = useCreateUserMutation();
+        {isLoading: loading, isError, error, isSuccess },
+    ] = useCreateUserMutation() as any
+    const message = isError ? error?.data?.error : isSuccess ? "Signup Successful" : "";
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
         setEmailError("");
         setPasswordError("");
         emailRef.current?.classList.remove('border-red-500');
@@ -37,17 +36,6 @@ const SignUp: FC<SignInProps> = () => {
             return;
         }
         mutateAsync({ email, password })
-            .then((res: any) => {
-                console.log(res);
-            })
-            .catch((err: any) => {
-                console.log(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            })
-
-
     }
     return (
         <div className='flex justify-center items-center h-full'>
@@ -67,6 +55,7 @@ const SignUp: FC<SignInProps> = () => {
                         <div className="mt-5 mb-5">
                             <PasswordInput passwordRef={passwordRef} passwordError={passwordError} meter={true} />
                         </div>
+                        {message && <p className=" text-sm my-[6px]">{message}</p>}
                         <div className="">
                             <button type="submit" className="w-full h-[40px] bg-[#2f80ed] rounded-[4px] text-white font-bold">{
                                 loading ? "Loading..." : "Sign Up"}</button>
