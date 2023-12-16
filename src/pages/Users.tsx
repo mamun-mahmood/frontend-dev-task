@@ -37,7 +37,7 @@ const Users = () => {
         {
             id: 2,
             name: 'Churned',
-            color: '#000',
+            color: '#344054',
         },
         {
             id: 3,
@@ -52,7 +52,7 @@ const Users = () => {
         {
             id: 5,
             name: 'Churned',
-            color: '#000',
+            color: '#344054',
         },
         {
             id: 6,
@@ -90,7 +90,7 @@ const Users = () => {
                         <span className='text-[#FFF] text-sm'>Add User</span>
                     </button>
                 </div>
-            </div>
+            </div> 
             <div className="mt-[33px] border border-[#EAECF0] rounded-lg">
                 <table className="w-full ">
                     <thead className="bg-[#F9FAFB] border-b border-[#eeeeee ">
@@ -127,11 +127,9 @@ const Users = () => {
                                 </td>
                                 <td className="py-[16px] flex gap-3 items-center">
                                     <div className="flex-1">
-                                        <p className={`w-fit font-mediumtext-sm bg-[#F2F4F7] text-center px-2 rounded-2xl `} style={{
-                                            color: dummyStatus[index].color
-                                        }}>{dummyStatus[index].name}</p>
+                                        <p className={`w-fit font-mediumtext-sm bg-[#F2F4F7] text-center px-2 py-[2px] rounded-2xl `} style={{ color: dummyStatus[index].color }}>{dummyStatus[index].name}</p>
                                     </div>
-                                    <div className="flex gap-3">
+                                    <div className="flex gap-3 pr-5">
                                         <IconButton icon="/trash.svg" onClick={handleDelete} />
                                         <IconButton icon="/edit.svg" onClick={handleEdit} />
                                     </div>

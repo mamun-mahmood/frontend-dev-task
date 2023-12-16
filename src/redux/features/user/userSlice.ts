@@ -8,16 +8,20 @@ export interface IUserState {
   last_name: string;
   avatar: string;
   status: object;
+  isLoggedIn: boolean;
+  token: string;
 }
 
 const initialState: IUserState = {
   id: 0,
-  name: "John Doe",
+  name: "",
   email: "",
   first_name: "",
   last_name: "",
   avatar: "",
   status: {},
+  isLoggedIn: false,
+  token: "",
 };
 
 export const userSlice = createSlice({

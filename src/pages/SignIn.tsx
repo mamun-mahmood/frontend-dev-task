@@ -1,19 +1,16 @@
-import { FC, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import EmailInput from '../components/EmailInput';
 import PasswordInput from '../components/PasswordInput';
 
-interface SignInProps {
-    // Define your component props here
-}
 
-const SignIn: FC<SignInProps> = () => {
+const SignIn = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(false);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [message, setMessage] = useState("");
+   const message = ""
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
@@ -33,7 +30,7 @@ const SignIn: FC<SignInProps> = () => {
         }
     }
     return (
-        <div className='flex justify-center items-center h-full'>
+        <div className='flex justify-center items-center h-full w-full'>
             <div className="w-[444px] h-[576px] ">
                 <div className="w-[444px] h-[576px] py-[54px] px-[62px] top-0 left-0 bg-white rounded-[16px] border border-solid border-[#eeeeee] shadow-[0px_8px_8px_-4px_#10182808,0px_20px_24px_-4px_#10182814]" >
                     <div className='flex gap-5 items-center'>
