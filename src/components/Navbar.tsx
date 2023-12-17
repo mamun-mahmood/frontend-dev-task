@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Link, useLocation, } from 'react-router-dom';
-import { useAppSelector } from '../redux/hooks';
-import { selectUser } from '../redux/features/user/userSlice';
+import { selectUser, setUser } from '../redux/features/user/userSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useLazyGetUserQuery } from '../services/user';
 
 const navBtns = [
     { name: "Home", path: "/" },
@@ -26,8 +28,23 @@ const navBtns2 = [
 ]
 const Navbar = () => {
     const currentPath = useLocation().pathname;
-    const avatar = "/Avatar.png"
-    const {isLoggedIn} = useAppSelector(selectUser)
+    const { isLoggedIn, id=2, avatar } = useAppSelector(selectUser)    
+    const [
+        getUser
+    ] = useLazyGetUserQuery()
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        if (isLoggedIn) {
+            getUser({id}).then((res: any) => {
+                if (res?.data) {
+                    dispatch(
+                        setUser({ avatar: res?.data.data.avatar})
+                    )
+                }
+            }
+            )
+        }
+    }, [dispatch, getUser, id, isLoggedIn])
     return (
         <nav className="bg-[#6941C6] h-20">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex py-4 items-center">
@@ -51,7 +68,7 @@ const Navbar = () => {
                         </button>
                     ))}
                     <button className="hover:bg-[#7F56D9] rounded-full p-1">
-                        <img className='w-10' src={avatar} alt="profile" />
+                        <img className='w-10 rounded-full' src={avatar} alt="profile" />
                     </button>
                 </div>
 

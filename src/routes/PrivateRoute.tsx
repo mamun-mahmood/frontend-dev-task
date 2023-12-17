@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
-import { useAppSelector } from '../redux/hooks';
-import { selectUser } from '../redux/features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
+import { selectUser } from '../redux/features/user/userSlice';
+import { useAppSelector } from '../redux/hooks';
 
 interface PrivateRouteProps {
     children: React.ReactNode
@@ -11,12 +11,13 @@ interface PrivateRouteProps {
 const PrivateRoute: FC<PrivateRouteProps> = ({children}) => {
     const { isLoggedIn } = useAppSelector(selectUser)
     const navigate = useNavigate()
-
+    const from = useLocation().pathname
+    
     useEffect(() => {
         if (!isLoggedIn) {
-            navigate('/signin')
+            navigate('/signin', {state: {from}})
         }
-    }, [isLoggedIn, navigate])
+    }, [isLoggedIn, navigate, from])
 
     return isLoggedIn ? children : <Loader/>
 };

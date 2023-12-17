@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import EmailInput from '../components/EmailInput';
 import PasswordInput from '../components/PasswordInput';
-import { setUser } from '../redux/features/user/userSlice';
-import { useAppDispatch } from '../redux/hooks';
+import { selectUser, setUser } from '../redux/features/user/userSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useLoginMutation } from '../services/user';
 
 
@@ -17,10 +17,12 @@ const SignIn = () => {
         { isLoading: loading, isError, error, isSuccess },
     ] = useLoginMutation() as any;
     const message = isError ? error?.data?.error : isSuccess ? "Signin Successful" : "";
+    const { isLoggedIn } = useAppSelector(selectUser)
     const dispatch = useAppDispatch();
-
+    const from = useLocation().state?.from;
+    const navigate = useNavigate()
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        e.preventDefault()
         setEmailError("");
         setPasswordError("");
         emailRef.current?.classList.remove('border-red-500');
@@ -42,11 +44,21 @@ const SignIn = () => {
                 dispatch(
                     setUser({ token: res.data.token, isLoggedIn: true, email: res.data.email, id: res.data.id })
                 )
-               
             }
         })
+        dispatch(
+            setUser({
+                isLoggedIn: true,
+            })
+        )
 
     }
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate(from || '/')
+        }
+    }, [isLoggedIn, navigate, from])
+
     return (
         <div className='flex justify-center items-center h-full w-full'>
             <div className="w-[444px] h-[576px] ">

@@ -25,6 +25,12 @@ export const userApi = createApi({
                 body,
             }),
         }),
+        getUser: builder.query({
+            query: ({id}) => ({
+                url: `/users/${id}`,
+                method: 'GET',
+            })
+        }),
     }),
 }) 
-export const { useCreateUserMutation, useLazyGetUsersQuery, useLoginMutation } = userApi;
+export const { useCreateUserMutation, useLazyGetUsersQuery, useLoginMutation, useLazyGetUserQuery } = userApi;

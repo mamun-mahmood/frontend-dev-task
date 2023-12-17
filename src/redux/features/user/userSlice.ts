@@ -13,7 +13,7 @@ export interface IUserState {
 }
 
 const initialState: IUserState = {
-  id: 0,
+  id: 2,
   name: "",
   email: "",
   first_name: "",
@@ -29,15 +29,15 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, name, email, first_name, last_name, avatar, isLoggedIn, token } = action.payload;
+      const { id, name, email, first_name, last_name, avatar, token } = action.payload;
       state.id = id;
-      state.name = name;
-      state.email = email;
-      state.first_name = first_name;
-      state.last_name = last_name;
-      state.avatar = avatar;
-      state.isLoggedIn = isLoggedIn;
-      state.token = token;
+      state.name = name || state.name;
+      state.email = email || state.email;
+      state.first_name = first_name || state.first_name;
+      state.last_name =  last_name || state.last_name;
+      state.avatar =  avatar || state.avatar;
+      state.isLoggedIn = true;
+      state.token = token || state.token;
     },
     clearUser: (state) => {
       state.id = 0;
@@ -46,6 +46,8 @@ export const userSlice = createSlice({
       state.first_name = "";
       state.last_name = "";
       state.avatar = "";
+      state.isLoggedIn = false;
+      state.token = "";
     },
   },
 });
