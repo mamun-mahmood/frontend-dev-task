@@ -41,8 +41,17 @@ const SignIn = () => {
         }
         login({ email, password }).then((res: any) => {
             if (res?.data?.token) {
+                const { token, id } = res.data
+                localStorage.setItem('stack-token',
+                    JSON.stringify({ token, email,  })
+                )
                 dispatch(
-                    setUser({ token: res.data.token, isLoggedIn: true, email: res.data.email, id: res.data.id })
+                    setUser({
+                        isLoggedIn: true,
+                        email,
+                        id,
+                        token
+                    })
                 )
             }
         })

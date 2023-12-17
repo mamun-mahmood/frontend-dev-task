@@ -6,8 +6,28 @@ import SignUp from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Users from './pages/Users'
 import PrivateRoute from './routes/PrivateRoute'
+import checkAuth from './utils/auth'
+import { useAppDispatch } from './redux/hooks'
+import { setUser } from './redux/features/user/userSlice'
 
 function App() {
+  const {
+    isLoggedIn,
+    email,
+    token
+  } = checkAuth()
+  const dispatch = useAppDispatch()
+  if (isLoggedIn) {
+    dispatch(
+      setUser({
+        isLoggedIn: true,
+        email,
+        token
+      })
+    )
+  }
+
+
   return (
     <BrowserRouter>
       <div className="h-screen w-screen">

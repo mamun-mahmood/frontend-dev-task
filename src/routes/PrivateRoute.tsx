@@ -8,18 +8,18 @@ interface PrivateRouteProps {
     children: React.ReactNode
 }
 
-const PrivateRoute: FC<PrivateRouteProps> = ({children}) => {
+const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     const { isLoggedIn } = useAppSelector(selectUser)
     const navigate = useNavigate()
     const from = useLocation().pathname
     
     useEffect(() => {
         if (!isLoggedIn) {
-            navigate('/signin', {state: {from}})
+            navigate('/signin', { state: { from } })
         }
     }, [isLoggedIn, navigate, from])
 
-    return isLoggedIn ? children : <Loader/>
+    return isLoggedIn ? children : <Loader />
 };
 
 export default PrivateRoute;
