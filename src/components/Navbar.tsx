@@ -7,7 +7,7 @@ import { useLazyGetUserQuery } from '../services/user';
 const navBtns = [
     { name: "Home", path: "/" },
     { name: "Users", path: "/users" },
-    { name: "Projects", path: "/projects" },
+    { name: "Projects", path: "/dashboard" },
     { name: "Tasks", path: "/tasks" },
     { name: "Reporting", path: "/reporting" },
 ]
@@ -28,17 +28,17 @@ const navBtns2 = [
 ]
 const Navbar = () => {
     const currentPath = useLocation().pathname;
-    const { isLoggedIn, id=2, avatar } = useAppSelector(selectUser)    
+    const { isLoggedIn, id = 2, avatar } = useAppSelector(selectUser)
     const [
         getUser
     ] = useLazyGetUserQuery()
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (isLoggedIn) {
-            getUser({id}).then((res: any) => {
+            getUser({ id }).then((res: any) => {
                 if (res?.data) {
                     dispatch(
-                        setUser({ avatar: res?.data.data.avatar})
+                        setUser({ avatar: res?.data.data.avatar })
                     )
                 }
             }
@@ -60,7 +60,7 @@ const Navbar = () => {
                         ))}
                     </div>
                 </div>
-                <div className="gap-2 hidden lg:flex">
+                {isLoggedIn && <div className="gap-2 hidden lg:flex">
                     {navBtns2.map(({ icon }, index) => (
                         <button key={index}
                             className="text-gray-300 hover:bg-[#7F56D9] hover:text-white px-3 py-2 rounded-full text-sm font-medium flex items-center gap-2">
@@ -70,7 +70,7 @@ const Navbar = () => {
                     <button className="hover:bg-[#7F56D9] rounded-full p-1">
                         <img className='w-10 rounded-full' src={avatar} alt="profile" />
                     </button>
-                </div>
+                </div>}
 
             </div>
         </nav>
