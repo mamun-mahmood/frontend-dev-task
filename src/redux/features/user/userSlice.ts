@@ -10,6 +10,7 @@ export interface IUserState {
   status: object;
   isLoggedIn: boolean;
   token: string;
+  selected: boolean
 }
 
 const initialState: IUserState = {
@@ -22,6 +23,7 @@ const initialState: IUserState = {
   status: {},
   isLoggedIn: false,
   token: "",
+  selected: false
 };
 
 export const userSlice = createSlice({

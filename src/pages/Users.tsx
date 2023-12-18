@@ -3,6 +3,7 @@ import Loader from '../components/Loader';
 import { IUserState } from '../redux/features/user/userSlice';
 import { useLazyGetUsersQuery } from '../services/user';
 import IconButton from '../components/IconButton';
+import CheckBox from '../components/CheckBox';
 
 const Users = () => {
     const [currentPage, setPage] = useState(1)
@@ -10,14 +11,20 @@ const Users = () => {
         getUsers,
         { data, isLoading },
     ] = useLazyGetUsersQuery()
+    const [users, setUsers] = useState([]) as [IUserState[], any]
     useEffect(() => {
         getUsers({ page: currentPage })
     }, [getUsers, currentPage])
-
-    const { data: users = [], total_pages: totalPage } = data as {
+    const { data: usersData = [], total_pages: totalPage } = data as {
         data: IUserState[],
         total_pages: number,
-    } || {}
+    } || {};
+    useEffect(() => {
+        setUsers(usersData.map((user: any) => ({
+            ...user,
+            selected: false
+        })))
+    }, [usersData])
 
     const handleNext = () => {
         setPage(prev => prev + 1)
@@ -25,9 +32,25 @@ const Users = () => {
     const handlePrevious = () => {
         setPage(prev => prev - 1)
     }
-    // const handleSelectAll = () => { }
+    const handleSelectAll = (e: any) => {
+        setUsers((prev: any,) => prev.map((user: any) => ({
+            ...user,
+            selected: e.target.checked
+        })))
+    }
     const handleDelete = () => { }
     const handleEdit = () => { }
+    const handleSelect = (id: number) => {
+        setUsers((prev: any,) => prev.map((user: any) => {
+            if (user.id === id) {
+                return {
+                    ...user,
+                    selected: !user.selected
+                }
+            }
+            return user
+        }))
+    }
     const dummyStatus = [
         {
             id: 1,
@@ -90,25 +113,22 @@ const Users = () => {
                         <span className='text-[#FFF] text-sm'>Add User</span>
                     </button>
                 </div>
-            </div> 
+            </div>
             <div className="mt-[33px] border border-[#EAECF0] rounded-lg">
                 <table className="w-full ">
-                    <thead className="bg-[#F9FAFB] border-b border-[#eeeeee ">
-                        <tr className="text-[#344054] text-sm ">
-                            <th className="pl-6 py-[16px] text-start flex items-center gap-3"> <input className='w-5 h-5 rounded-[6px] bg-[#b82d2d] border-[1px] border-solid border-[#D0D5DD]'
-                                type="checkbox"
-                                name="selected" />
-                            </th>
+                    <thead className="bg-[#F9FAFB] border-b border-[#eeeeee]">
+                        <tr className="text-[#344054] text-sm  ">
+                            <td className="py-[16px] pl-6 pr-2">
+                                <CheckBox checked={users.every((user: any) => user.selected)} onChange={handleSelectAll} value="all" />
+                            </td>
                             {tableHeader.map((item) => <th key={item} className="text-start">{item}</th>)}
                         </tr>
                     </thead>
                     <tbody className='' >
-                        {users.map(({ first_name, last_name, id, email, avatar, }, index) => (
+                        {users.map(({ selected, first_name, last_name, id, email, avatar, }, index) => (
                             <tr key={id} className="text-[#344054] text-sm">
-                                <td className="py-2 px-6 ">
-                                    <input className='w-5 h-5 rounded-[6px] bg-[#b82d2d] border-[1px] border-solid border-[#D0D5DD]'
-                                        type="checkbox"
-                                        name="selected" id={id.toString()} />
+                                <td className="pl-6 pr-2">
+                                    <CheckBox checked={selected} value={id.toString()} onChange={() => handleSelect(id)} />
                                 </td>
                                 <td className="py-[16px]">
                                     <div className="flex items-center gap-3">
