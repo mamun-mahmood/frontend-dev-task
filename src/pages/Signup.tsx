@@ -1,8 +1,10 @@
-import { FC, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import EmailInput from '../components/EmailInput';
 import PasswordInput from '../components/PasswordInput';
 import { useCreateUserMutation } from '../services/user';
+import { selectUser, setUser } from '../redux/features/user/userSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 interface SignInProps {
     // Define your component props here
 }
@@ -14,9 +16,13 @@ const SignUp: FC<SignInProps> = () => {
     const [passwordError, setPasswordError] = useState("");
     const [
         mutateAsync,
-        {isLoading: loading, isError, error, isSuccess },
+        { isLoading: loading, isError, error, isSuccess },
     ] = useCreateUserMutation() as any
     const message = isError ? error?.data?.error : isSuccess ? "Signup Successful" : "";
+    const { isLoggedIn } = useAppSelector(selectUser)
+    const dispatch = useAppDispatch();
+    const from = useLocation().state?.from;
+    const navigate = useNavigate()
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setEmailError("");
@@ -35,8 +41,28 @@ const SignUp: FC<SignInProps> = () => {
             setPasswordError('This field is required');
             return;
         }
-        mutateAsync({ email, password })
+        mutateAsync({ email, password }).then((res: any) => {
+            if (res?.data) {
+                const { token = "ksjdfkaf23hd" } = res.data
+                localStorage.setItem('stack-token',
+                    JSON.stringify({ token, email, })
+                )
+                dispatch(
+                    setUser({
+                        isLoggedIn: true,
+                        email,
+                        id: 2,
+                        token
+                    })
+                )
+            }
+        })
     }
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate(from || '/')
+        }
+    }, [navigate, from, isLoggedIn])
     return (
         <div className='flex justify-center items-center h-full'>
             <div className="w-[444px] h-[576px] ">

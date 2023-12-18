@@ -46,7 +46,7 @@ const Navbar = () => {
         }
     }, [dispatch, getUser, id, isLoggedIn])
     return (
-        <nav className="bg-[#6941C6] h-20">
+        <nav className="bg-[#6941C6] ">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex py-4 items-center">
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <Link to="/" className="flex-shrink-0 flex items-center mr-[56px]">
@@ -60,7 +60,7 @@ const Navbar = () => {
                         ))}
                     </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="gap-2 hidden lg:flex">
                     {navBtns2.map(({ icon }, index) => (
                         <button key={index}
                             className="text-gray-300 hover:bg-[#7F56D9] hover:text-white px-3 py-2 rounded-full text-sm font-medium flex items-center gap-2">

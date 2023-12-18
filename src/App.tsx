@@ -30,7 +30,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen w-screen">
+      <div className="h-screen">
         <Routes>
           <Route path="/" element={<Home />} >
             <Route path="dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />

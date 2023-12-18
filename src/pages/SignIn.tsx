@@ -43,7 +43,7 @@ const SignIn = () => {
             if (res?.data?.token) {
                 const { token, id } = res.data
                 localStorage.setItem('stack-token',
-                    JSON.stringify({ token, email,  })
+                    JSON.stringify({ token, email, })
                 )
                 dispatch(
                     setUser({
@@ -55,11 +55,6 @@ const SignIn = () => {
                 )
             }
         })
-        dispatch(
-            setUser({
-                isLoggedIn: true,
-            })
-        )
 
     }
     useEffect(() => {
@@ -96,7 +91,9 @@ const SignIn = () => {
                                 }</button>
                         </div>
                         <div className="mt-[25px]">
-                            <p className="text-[#B0B7C3]">Already have an account? <Link to={"/signup"} className="text-[#377DFF]">Sign Up</Link></p>
+                            <p className="text-[#B0B7C3]">Already have an account? <Link to={"/signup"} state={
+                                { from: from || "/" }
+                            } className="text-[#377DFF]">Sign Up</Link></p>
                         </div>
                     </form>
                 </div>
